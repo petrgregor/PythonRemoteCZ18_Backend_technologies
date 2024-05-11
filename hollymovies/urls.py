@@ -16,6 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from viewer.views import *
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('hello/', hello),
+    path('hello2/<s>/', hello2),  # User data: Regular expression, eg. http://127.0.0.1:8000/hello2/cruel/
+    path('hello3/', hello3),      # User data: URL encoding, eg. http://127.0.0.1:8000/hello3/?s=cruel
 ]
