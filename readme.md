@@ -52,3 +52,18 @@ INSTALLED_APPS = [
     'viewer',
 ]
 ```
+
+## ORM
+
+Modely vytváříme v souboru `models.py` v dané aplikaci.
+
+DŮLEŽITÉ: Po každé změně v modelech (tj. v souboru `models.py`) musíme migrovat databázi:
+
+- vytvoření migračního skriptu: `python manage.py makemigrations`
+- aplikujeme migraci: `python manage.py migrate`
+
+DŮLEŽITÉ: Migrační skripty vkládáme do repozitáře (git), databázi ne (obsahuje mimo jiné i hesla všech uživatelů)
+
+## shell
+
+Pro rychlou práci s databází lze využít Django shell: `python manage.py shell`
