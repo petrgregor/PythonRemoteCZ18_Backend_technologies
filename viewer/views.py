@@ -56,3 +56,19 @@ def genres(request):
 def movies(request):
     result = Movie.objects.all().order_by('title')
     return render(request, 'movies.html', {'title': 'List of movies', 'movies': result})
+
+
+# DONE: detailní informace o jednom konkrétním filmu (id zadané v adrese)
+# DONE: template
+# DONE: view
+# DONE: url
+# DONE: odkaz z názvu filmu v seznamu filmů (movies)
+def movie(request, pk):
+    if Movie.objects.filter(id=pk).exists():  # otestujeme, zda film existuje
+        result = Movie.objects.get(id=pk)
+        return render(request, 'movie.html', {'title': result.title, 'movie': result})
+
+    # pokud daný film neexistuje, vypíšeme seznam všech filmů
+    # TODO: lepší by bylo vypsat chybovou hlášku
+    result = Movie.objects.all().order_by('title')
+    return render(request, 'movies.html', {'title': 'Movies', 'movies': result})

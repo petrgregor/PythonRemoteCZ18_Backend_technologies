@@ -30,4 +30,5 @@ urlpatterns = [
     path('', home, name='home'),  # home
     path('genres/', genres, name='genres'),
     path('movies/', movies, name='movies'),
+    path('movie/<pk>/', movie, name='movie'),
 ]
