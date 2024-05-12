@@ -1,6 +1,9 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
+from viewer.models import Genre, Movie
+
+
 # Create your views here.
 
 
@@ -39,3 +42,17 @@ def hello5(request, s0):
         template_name='hello.html',
         context={'adjectives': [s0, s1, 'beautiful', 'wonderful']}
     )
+
+
+def home(request):
+    return render(request, 'home.html', {'title': 'Welcome to HollyMovies'})
+
+
+def genres(request):
+    result = Genre.objects.all().order_by('name')
+    return render(request, 'genres.html', {'title': 'List of genres', 'genres': result})
+
+
+def movies(request):
+    result = Movie.objects.all().order_by('title')
+    return render(request, 'movies.html', {'title': 'List of movies', 'movies': result})
