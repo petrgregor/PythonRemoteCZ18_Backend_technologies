@@ -4,3 +4,5 @@
 *.imp
 *.xml
 /db.sqlite3
+
+hollymovies/my_secret_key.py

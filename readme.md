@@ -67,3 +67,62 @@ DŮLEŽITÉ: Migrační skripty vkládáme do repozitáře (git), databázi ne (
 ## shell
 
 Pro rychlou práci s databází lze využít Django shell: `python manage.py shell`
+
+## Vytvoření superuživatele (admin)
+`python manage.py createsuperuser`
+
+Na stránce http://127.0.0.1:8000/admin je administrační panel.
+
+## Export a import dat
+
+Export dat:
+`python manage.py dumpdata viewer --output fixtures.json`,
+kde 'viewer' je název aplikace, ze které chci exportovat data.
+Data se uloží ve formátu json.
+
+Následně import dat z formátu json do databáze:
+`python manage.py loaddata fixtures.json`
+
+DŮLEŽITÉ: Při importu dát pozor na id (pk), protože se do databáze vloží s těmito id a mohou tedy přepsat stávající data.
+
+## Queries
+
+### .get()
+Vrací jednu instanci nalezeného záznamu v databázi. 
+
+### .filter()
+Vrací kolekci instancí nalezených záznamů.
+
+`Movie.objects.filter(title="The Green Mile")`
+
+`Movie.objects.filter(rating=5)`
+
+`Movie.objects.filter(rating__gt=4)`   `__gt` => "větší než" 
+
+`Movie.objects.filter(rating__gte=4)`  `__gte` => "větší rovno"
+
+`Movie.objects.filter(rating__lt=4)`   `__lt` => "menší než"
+
+`Movie.objects.filter(rating__lte=4)`  `__lte` => menší rovno
+
+`drama = Genre.objects.get(name='Drama')`
+
+`Movie.objects.filter(genre=drama)`
+
+`Movie.objects.filter(genre__name="Drama")`
+
+`Movie.objects.filter(released__year=1994)`
+
+`Movie.objects.filter(title__contains="Gump")`
+
+`Movie.objects.filter(title__in=['Se7en', 'Fight Club'])`  # „Se7en” and „Fight Club”
+
+`Movie.objects.exclude(released__year=1994)`
+
+`Movie.objects.filter(title="Avatar").exists()` -- test, zda existuje nějaký záznam
+
+`Movie.objects.exclude(released__year=1994).count()` -- vrátí počet vyhovujícíh záznamů
+
+`Movie.objects.all().order_by('released')` -- uspořádáme dle data natočení vzestupně
+
+`Movie.objects.all().order_by('-released')` -- sestupně
