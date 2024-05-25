@@ -85,6 +85,21 @@ Následně import dat z formátu json do databáze:
 
 DŮLEŽITÉ: Při importu dát pozor na id (pk), protože se do databáze vloží s těmito id a mohou tedy přepsat stávající data.
 
+Při tomto použití může být problém s diakritikou. Lze to opravit následujícím způsobem:
+
+Nainstalujeme rozšíření:
+`pip install django-dump-load-utf8`
+
+Přidáme řádek
+`'django_dump_load_utf8',`
+do INSTALLED_APPS v settings.py.
+
+Export dat z databáze: 
+`python manage.py dumpdatautf8 viewer --output fixtures.json`
+
+Import dat do databáze:
+`python manage.py loaddatautf8 fixtures.json`
+
 ## Queries
 
 ### .get()

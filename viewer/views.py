@@ -58,6 +58,13 @@ def movies(request):
     return render(request, 'movies.html', {'title': 'List of movies', 'movies': result})
 
 
+def movies_by_rating(request):
+    result = Movie.objects.all().order_by('-rating', 'title')
+    return render(request,
+                  'movies_by_rating.html',
+                  {'title': 'List of movies by rating', 'movies': result})
+
+
 # DONE: detailní informace o jednom konkrétním filmu (id zadané v adrese)
 # DONE: template
 # DONE: view
