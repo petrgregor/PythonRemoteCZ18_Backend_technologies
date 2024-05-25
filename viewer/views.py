@@ -1,6 +1,12 @@
-from django.forms import Form, CharField, IntegerField, DateField, ModelChoiceField, Textarea
+import re
+from concurrent.futures._base import LOGGER
+from datetime import date
+
+from django.core.exceptions import ValidationError
+from django.forms import Form, CharField, IntegerField, DateField, ModelChoiceField, Textarea, ModelForm
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import TemplateView, ListView, FormView
 
@@ -170,6 +176,22 @@ class GenresView(ListView):
 
 """ Forms """
 
+""" Validators """
+def capitalized_validator(value):
+    if value[0].islower():
+        raise ValidationError('Value must be capitalized.')
+
+class PastMonthField(DateField):
+
+    def validate(self, value):
+        super().validate(value)
+        if value >= date.today():
+            raise ValidationError('Only past dates allowed here.')
+
+    def clean(self, value):
+        result = super().clean(value)
+        return date(year=result.year, month=result.month, day=1)
+
 
 class MovieForm(Form):
     title = CharField(max_length=64)
@@ -179,11 +201,79 @@ class MovieForm(Form):
     description = CharField(widget=Textarea, required=False)
 
     def clean_title(self):
-        initial_data = super.clean()  # původní data ve formuláři od uživatele
+        initial_data = super().clean()  # původní data ve formuláři od uživatele
         initial = initial_data['title']  # původní title od uživatele
         return initial.strip()  # odtraníme prázdné znaky na začátku a konci textu
+
+    def clean_description(self):
+        # Force each sentence of the description to be capitalized.
+        initial = self.cleaned_data['description']
+        sentences = re.sub(r'\s*\.\s*', '.', initial).split('.')
+        return '. '.join(sentence.capitalize() for sentence in sentences)
+
+    def clean(self):
+        result = super().clean()
+        if result['genre'].name == 'Commedy' and result['rating'] > 5:
+            self.add_error('genre', '')
+            self.add_error('rating', '')
+            raise ValidationError(
+                "Commedies aren't so good to be rated over 5."
+            )
+        return result
+
+
+class MovieModelForm(ModelForm):
+
+    class Meta:
+        model = Movie       # z kterého modelu bude brát informace
+        #fields = ['genre', 'title']  # které položky chceme ve formuláři zobrazit
+        #exclude = ['description']    # které položky nechceme zobrazit
+        fields = '__all__'
+
+    title = CharField(validators=[capitalized_validator])
+    rating = IntegerField(min_value=1, max_value=10)
+    released = PastMonthField()
+
+    def clean_title(self):
+        initial_data = super().clean()  # původní data ve formuláři od uživatele
+        initial = initial_data['title']  # původní title od uživatele
+        return initial.strip()  # odtraníme prázdné znaky na začátku a konci textu
+
+    def clean_description(self):
+        # Force each sentence of the description to be capitalized.
+        initial = self.cleaned_data['description']
+        sentences = re.sub(r'\s*\.\s*', '.', initial).split('.')
+        return '. '.join(sentence.capitalize() for sentence in sentences)
+
+    def clean(self):
+        result = super().clean()
+        if result['genre'].name == 'Commedy' and result['rating'] > 5:
+            self.add_error('genre', '')
+            self.add_error('rating', '')
+            raise ValidationError(
+                "Commedies aren't so good to be rated over 5."
+            )
+        return result
 
 
 class MovieCreateView(FormView):
     template_name = 'form.html'
-    form_class = MovieForm
+    form_class = MovieModelForm
+    success_url = reverse_lazy('movie_create')
+
+    def form_valid(self, form):
+        result = super().form_valid(form)
+        cleaned_data = form.cleaned_data
+        Movie.objects.create(
+            title=cleaned_data['title'],
+            genre=cleaned_data['genre'],
+            rating=cleaned_data['rating'],
+            released=cleaned_data['released'],
+            description=cleaned_data['description']
+        )
+        return result
+
+    def form_invalid(self, form):
+        LOGGER.warning('User provided invalid data.')
+        return super().form_invalid(form)
+
