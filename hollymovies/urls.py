@@ -30,7 +30,8 @@ urlpatterns = [
     path('', home, name='home'),  # home
     path('genres/', genres, name='genres'),
     path('genre/<pk>/', genre, name='genre'),
-    path('movies/', movies, name='movies'),
+    #path('movies/', movies, name='movies'),
+    path('movies/', MoviesView.as_view(), name='movies'),
     path('movies_by_rating/', movies_by_rating, name='movies_by_rating'),
     path('movie/<pk>/', movie, name='movie'),
 ]

@@ -7,6 +7,9 @@ from django.db.models import Model, CharField, ForeignKey, DO_NOTHING, IntegerFi
 class Genre(Model):
     name = CharField(max_length=20)
 
+    class Meta:
+        ordering = ['name']
+
     def __str__(self):
         return self.name
 
@@ -18,6 +21,9 @@ class Movie(Model):
     released = DateField()
     description = TextField()
     created = DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['title', 'released']
 
     def __str__(self):
         return f'{self.title} ({self.released.year})'

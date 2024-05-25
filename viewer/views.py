@@ -1,5 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.views import View
+from django.views.generic import TemplateView, ListView
 
 from viewer.models import Genre, Movie
 
@@ -78,13 +80,45 @@ def movie(request, pk):
     # pokud daný film neexistuje, vypíšeme seznam všech filmů
     # TODO: lepší by bylo vypsat chybovou hlášku
     result = Movie.objects.all().order_by('title')
-    return render(request, 'movies.html', {'title': 'Movies', 'movies': result})
+    return render(request,
+                  'movies.html',
+                  {'title': 'Movies', 'movies': result})
 
 
 def genre(request, pk):
     if Genre.objects.filter(id=pk).exists():
         genre = Genre.objects.get(id=pk)
         items = Movie.objects.filter(genre=genre)
-        return render(request, "genre.html", {'movies': items, 'genre': genre})
+        return render(request,
+                      "genre.html",
+                      {'movies': items, 'genre': genre})
 
     return genres(request)
+
+
+""" Class-Based Views """
+
+""" 
+# první verze pomocí View - jen se funkce vloží do třídy
+class MoviesView(View):
+    def get(self, request):
+        result = Movie.objects.all().order_by('title')
+        return render(request,
+                      'movies.html',
+                      {'title': 'List of movies', 'movies': result})
+"""
+
+
+"""
+# druhá verze pomocí TemplateView - již potřebujeme jen zada jméno tamplaty a data
+class MoviesView(TemplateView):
+    template_name = 'movies.html'
+    extra_context = {'title': 'List of movies',
+                     'movies': Movie.objects.all().order_by('title')}
+"""
+
+
+# třetí verze pomocí ListView (zobrazení seznamu) - již definujeme jenom template a model
+class MoviesView(ListView):
+    template_name = 'movies2.html'
+    model = Movie
