@@ -8,7 +8,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import TemplateView, ListView, FormView
+from django.views.generic import TemplateView, ListView, FormView, CreateView, UpdateView, DeleteView
 
 from viewer.models import Genre, Movie
 
@@ -256,7 +256,7 @@ class MovieModelForm(ModelForm):
         return result
 
 
-class MovieCreateView(FormView):
+class MovieFormView(FormView):
     template_name = 'form.html'
     form_class = MovieModelForm
     success_url = reverse_lazy('movie_create')
@@ -277,3 +277,62 @@ class MovieCreateView(FormView):
         LOGGER.warning('User provided invalid data.')
         return super().form_invalid(form)
 
+
+class MovieCreateView(CreateView):
+    template_name = 'form.html'
+    form_class = MovieModelForm
+    success_url = reverse_lazy('movies')
+
+    def form_invalid(self, form):
+        LOGGER.warning('User provided invalid data.')
+        return super().form_invalid(form)
+
+
+class MovieUpdateView(UpdateView):
+    template_name = 'form.html'
+    model = Movie
+    form_class = MovieModelForm
+    success_url = reverse_lazy('movies')
+
+    def form_invalid(self, form):
+        LOGGER.warning('User provided invalid data.')
+        return super().form_invalid(form)
+
+
+class MovieDeleteView(DeleteView):
+    template_name = 'movie_confirm_delete.html'
+    model = Movie
+    success_url = reverse_lazy('movies')
+
+
+class GenreModelForm(ModelForm):
+
+    class Meta:
+        model = Genre
+        fields = '__all__'
+
+    def clean_name(self):
+        initial_data = super().clean()
+        initial = initial_data['name'].strip()
+        return initial.capitalize()
+
+
+class GenreFormView(FormView):
+    template_name = 'form.html'
+    form_class = GenreModelForm
+    success_url = reverse_lazy('genre_create')
+
+    def form_valid(self, form):
+        result = super().form_valid(form)
+        cleaned_data = form.cleaned_data
+        Genre.objects.create(name=cleaned_data['name'])
+        return result
+
+    def form_invalid(self, form):
+        LOGGER.warning('User provided invalid data.')
+        return super().form_invalid(form)
+
+
+# TODO: definovat třídu GenreCreateView(CreateView):
+# TODO: definovat třídu GenreUpdateView(UpdateView):
+# TODO: přidat tlačítka na update a delete pro editaci a mazání žánru

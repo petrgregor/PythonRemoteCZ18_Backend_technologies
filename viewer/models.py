@@ -1,9 +1,6 @@
 from django.db.models import Model, CharField, ForeignKey, DO_NOTHING, IntegerField, DateField, TextField, DateTimeField
 
 
-# Create your models here.
-
-
 class Genre(Model):
     name = CharField(max_length=20)
 

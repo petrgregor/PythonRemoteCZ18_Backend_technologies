@@ -11,5 +11,8 @@ TODO: upravit vzhled
     <p>Rating: {{ movie.rating }}</p>
     <p>Released: {{ movie.released }}</p>
     <p>Popis: {{ movie.description }}</p>
+
+    <a href="{% url 'movie_update' movie.id %}">Update</a>
+    <a href="{% url 'movie_delete' movie.id %}">Delete</a>
 </div>
 {% endblock %}
