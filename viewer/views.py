@@ -1,7 +1,8 @@
+from django.forms import Form, CharField, IntegerField, DateField, ModelChoiceField, Textarea
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, FormView
 
 from viewer.models import Genre, Movie
 
@@ -124,6 +125,27 @@ class MoviesView(ListView):
     model = Movie
 
 
+# druhá verze pomocí TemplateView - již potřebujeme jen zada jméno tamplaty a data
+class MoviesByRatingView(TemplateView):
+    template_name = 'movies_by_rating.html'
+    extra_context = {'title': 'List of movies by rating',
+                     'movies': Movie.objects.all().order_by('-rating', 'title')}
+
+
+class MovieView(View):
+    def get(self, request, pk):
+        if Movie.objects.filter(id=pk).exists():  # otestujeme, zda film existuje
+            result = Movie.objects.get(id=pk)
+            return render(request, 'movie.html', {'title': result.title, 'movie': result})
+
+        # pokud daný film neexistuje, vypíšeme seznam všech filmů
+        # TODO: lepší by bylo vypsat chybovou hlášku
+        result = Movie.objects.all().order_by('title')
+        return render(request,
+                      'movies.html',
+                      {'title': 'Movies', 'movies': result})
+
+
 """
 class GenresView(View):
     def get(self, request):
@@ -144,3 +166,24 @@ class GenresView(TemplateView):
 class GenresView(ListView):
     template_name = 'genres2.html'
     model = Genre
+
+
+""" Forms """
+
+
+class MovieForm(Form):
+    title = CharField(max_length=64)
+    genre = ModelChoiceField(queryset=Genre.objects)
+    rating = IntegerField(min_value=1, max_value=10)
+    released = DateField()
+    description = CharField(widget=Textarea, required=False)
+
+    def clean_title(self):
+        initial_data = super.clean()  # původní data ve formuláři od uživatele
+        initial = initial_data['title']  # původní title od uživatele
+        return initial.strip()  # odtraníme prázdné znaky na začátku a konci textu
+
+
+class MovieCreateView(FormView):
+    template_name = 'form.html'
+    form_class = MovieForm
