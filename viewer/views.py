@@ -72,3 +72,12 @@ def movie(request, pk):
     # TODO: lepší by bylo vypsat chybovou hlášku
     result = Movie.objects.all().order_by('title')
     return render(request, 'movies.html', {'title': 'Movies', 'movies': result})
+
+
+def genre(request, pk):
+    if Genre.objects.filter(id=pk).exists():
+        genre = Genre.objects.get(id=pk)
+        items = Movie.objects.filter(genre=genre)
+        return render(request, "genre.html", {'movies': items, 'genre': genre})
+
+    return genres(request)
