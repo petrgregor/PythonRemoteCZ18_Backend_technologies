@@ -28,7 +28,8 @@ urlpatterns = [
     path('hello5/<s0>/', hello5),
 
     path('', home, name='home'),  # home
-    path('genres/', genres, name='genres'),
+    #path('genres/', genres, name='genres'),
+    path('genres/', GenresView.as_view(), name='genres'),
     path('genre/<pk>/', genre, name='genre'),
     #path('movies/', movies, name='movies'),
     path('movies/', MoviesView.as_view(), name='movies'),

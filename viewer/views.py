@@ -122,3 +122,25 @@ class MoviesView(TemplateView):
 class MoviesView(ListView):
     template_name = 'movies2.html'
     model = Movie
+
+
+"""
+class GenresView(View):
+    def get(self, request):
+        result = Genre.objects.all().order_by('name')
+        return render(request,
+                      'genres.html',
+                      {'title': 'List of genres', 'genres': result})
+"""
+
+
+"""
+class GenresView(TemplateView):
+    template_name = 'genres.html'
+    extra_context = {'title': 'List of genres', 'genres': Genre.objects.all()}
+"""
+
+
+class GenresView(ListView):
+    template_name = 'genres2.html'
+    model = Genre
