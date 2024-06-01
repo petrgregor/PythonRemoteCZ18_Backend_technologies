@@ -234,6 +234,11 @@ class MovieModelForm(ModelForm):
     rating = IntegerField(min_value=1, max_value=10)
     released = PastMonthField()
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
     def clean_title(self):
         initial_data = super().clean()  # původní data ve formuláři od uživatele
         initial = initial_data['title']  # původní title od uživatele
@@ -279,7 +284,7 @@ class MovieFormView(FormView):
 
 
 class MovieCreateView(CreateView):
-    template_name = 'form.html'
+    template_name = 'movie_form.html'
     form_class = MovieModelForm
     success_url = reverse_lazy('movies')
 
@@ -289,7 +294,7 @@ class MovieCreateView(CreateView):
 
 
 class MovieUpdateView(UpdateView):
-    template_name = 'form.html'
+    template_name = 'movie_form.html'
     model = Movie
     form_class = MovieModelForm
     success_url = reverse_lazy('movies')
