@@ -9,6 +9,8 @@
             <a href="{% url 'genre_update' genre.id %}">✏️</a>
             <a href="{% url 'genre_delete' genre.id %}">❌</a>
         </li>
+    {% empty %}
+        <p>List of genres is empty.</p>
     {% endfor %}
 </ul>
 <a href="{% url 'genre_create' %}">✖️</a>

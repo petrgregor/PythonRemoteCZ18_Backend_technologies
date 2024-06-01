@@ -6,10 +6,10 @@ TODO: upravit vzhled
 {% endcomment %}
 <!-- TODO test -->
 <div class="movie-details">
-    <h1>{{ movie.title }}</h1>
+    <h1>{{ movie.title|upper }}</h1>
     <p>Žánr: {{ movie.genre.name }}</p>
     <p>Rating: {{ movie.rating }}</p>
-    <p>Released: {{ movie.released }}</p>
+    <p>Released: {{ movie.released|date:"j. n. Y" }}</p>
     <p>Popis: {{ movie.description }}</p>
 
     <a href="{% url 'movie_update' movie.id %}">Update</a>

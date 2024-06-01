@@ -1,6 +1,7 @@
 {% load static %}
 
-<html {% if LANGUAGE_CODE %}lang="{{ LANGUAGE_CODE }}" {% endif %}>
+<!DOCTYPE html>
+<html {% if LANGUAGE_CODE %}lang="{{ LANGUAGE_CODE }}"{% else %}lang="en"{% endif %}>
 
 <head>
     <meta charset="utf-8">
@@ -26,30 +27,8 @@
 </head>
 
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container fixed">
-        <a class="navbar-brand" href="{% url 'home' %}">HollyMovies</a>
-        <button
-                class="navbar-toggler" type="button"
-                data-toggle="collapse" data-target="#navbarNavAltMarkup"
-        >
-            <span class="navbar-toggler-icon"></span>
-        </button>
 
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-                <a class="nav-item nav-link active" href="{% url 'home' %}">
-                    Home
-                </a>
-                <a class="nav-item nav-link active" href="{% url 'movies' %}">Movies</a>
-                <a class="nav-item nav-link active" href="{% url 'movies_by_rating' %}">Movies by rating</a>
-                <a class="nav-item nav-link active" href="{% url 'genres' %}">Genres</a>
-                <a class="nav-item nav-link active" href="{% url 'movie_create' %}">Add movie</a>
-                <a class="nav-item nav-link active" href="{% url 'genre_create' %}">Add genre</a>
-            </div>
-        </div>
-    </div>
-</nav>
+{% include "nav.html" %}
 
 <div class="container">
     <div class="jumbotron">
@@ -57,9 +36,7 @@
     </div>
 </div>
 
-<footer>
-    PythonRemoteCZ18 - Backend technologies
-</footer>
+{% include "footer.html" %}
 
 </body>
 

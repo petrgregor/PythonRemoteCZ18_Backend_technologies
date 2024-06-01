@@ -165,11 +165,5 @@ pulp_fiction.save()
 ### DELETE
 `Movie.objects.filter(title__contains='Godfather').delete()`
 
-## Domácí úkol
-Filtrovat filmy podle žánru:
-
-- template -- movies.html
-- view -- zde bude použit filtr dle žánru
-- url -- 'genre/<genre>/'
-- seznam žánrů bude klikací -- když kliknu na žánr, otevře se stránka se seznamem filmů daného žánru
-
+## Validace výsledných stránek
+Na adrese `https://validator.w3.org/` je možné otestovat validaci stránky.
