@@ -2,6 +2,9 @@ import re
 from concurrent.futures._base import LOGGER
 from datetime import date
 
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.core.exceptions import ValidationError
 from django.forms import Form, CharField, IntegerField, DateField, ModelChoiceField, Textarea, ModelForm
 from django.http import HttpResponse
@@ -44,6 +47,7 @@ def hello4(request):
     )
 
 
+@login_required
 def hello5(request, s0):
     s1 = request.GET.get('s1', '')
     return render(
@@ -278,7 +282,7 @@ class MovieFormView(FormView):
         return super().form_invalid(form)
 
 
-class MovieCreateView(CreateView):
+class MovieCreateView(LoginRequiredMixin, CreateView):
     template_name = 'form.html'
     form_class = MovieModelForm
     success_url = reverse_lazy('movies')
@@ -288,7 +292,7 @@ class MovieCreateView(CreateView):
         return super().form_invalid(form)
 
 
-class MovieUpdateView(UpdateView):
+class MovieUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'form.html'
     model = Movie
     form_class = MovieModelForm
@@ -299,7 +303,7 @@ class MovieUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class MovieDeleteView(DeleteView):
+class MovieDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'movie_confirm_delete.html'
     model = Movie
     success_url = reverse_lazy('movies')
@@ -333,20 +337,20 @@ class GenreFormView(FormView):
         return super().form_invalid(form)
 
 
-class GenreCreateView(CreateView):
+class GenreCreateView(LoginRequiredMixin, CreateView):
     template_name = 'form.html'
     form_class = GenreModelForm
     success_url = reverse_lazy('genres')
 
 
-class GenreUpdateView(UpdateView):
+class GenreUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'form.html'
     model = Genre
     form_class = GenreModelForm
     success_url = reverse_lazy('genres')
 
 
-class GenreDeleteView(DeleteView):
+class GenreDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'genre_confirm_delete.html'
     model = Genre
     success_url = reverse_lazy('genres')

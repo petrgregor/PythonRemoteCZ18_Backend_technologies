@@ -38,7 +38,7 @@ Pokud potřebujeme spustit více serverů najednou, tak můžeme změnit port:
 - views.py -- zde bude logika (propojení databáze a template)
 
 ### Registrace aplikace
-Aplikaci můsume zaregistrovat v souboru `.\hollymovies\settings.py`:
+Aplikaci můžume zaregistrovat v souboru `.\hollymovies\settings.py`:
 ```python
 INSTALLED_APPS = [
     'django.contrib.admin',
