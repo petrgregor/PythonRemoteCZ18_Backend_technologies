@@ -9,4 +9,8 @@
         <p>No movie of this genre in database.</p>
     {% endfor %}
 </ul>
+
+<a href="{% url 'genre_update' genre.id %}">Update</a>
+<a href="{% url 'genre_delete' genre.id %}">Delete</a>
+
 {% endblock %}

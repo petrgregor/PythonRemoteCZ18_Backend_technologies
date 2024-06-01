@@ -4,7 +4,12 @@
 <h1>List of genres</h1>
 <ul>
     {% for genre in object_list %}
-        <li><a href="{% url 'genre' genre.id %}">{{ genre }}</a></li>
+        <li>
+            <a href="{% url 'genre' genre.id %}">{{ genre }}</a>
+            <a href="{% url 'genre_update' genre.id %}">✏️</a>
+            <a href="{% url 'genre_delete' genre.id %}">❌</a>
+        </li>
     {% endfor %}
 </ul>
+<a href="{% url 'genre_create' %}">✖️</a>
 {% endblock %}

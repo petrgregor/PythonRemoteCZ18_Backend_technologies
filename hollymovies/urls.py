@@ -31,7 +31,10 @@ urlpatterns = [
 
     #path('genres/', genres, name='genres'),
     path('genres/', GenresView.as_view(), name='genres'),
-    path('genre/create/', GenreFormView.as_view(), name='genre_create'),
+    #path('genre/create/', GenreFormView.as_view(), name='genre_create'),
+    path('genre/create/', GenreCreateView.as_view(), name='genre_create'),
+    path('genre/update/<pk>/', GenreUpdateView.as_view(), name='genre_update'),
+    path('genre/delete/<pk>/', GenreDeleteView.as_view(), name='genre_delete'),
     path('genre/<pk>/', genre, name='genre'),
 
     #path('movies/', movies, name='movies'),

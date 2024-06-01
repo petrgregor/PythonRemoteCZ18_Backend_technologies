@@ -333,6 +333,20 @@ class GenreFormView(FormView):
         return super().form_invalid(form)
 
 
-# TODO: definovat třídu GenreCreateView(CreateView):
-# TODO: definovat třídu GenreUpdateView(UpdateView):
-# TODO: přidat tlačítka na update a delete pro editaci a mazání žánru
+class GenreCreateView(CreateView):
+    template_name = 'form.html'
+    form_class = GenreModelForm
+    success_url = reverse_lazy('genres')
+
+
+class GenreUpdateView(UpdateView):
+    template_name = 'form.html'
+    model = Genre
+    form_class = GenreModelForm
+    success_url = reverse_lazy('genres')
+
+
+class GenreDeleteView(DeleteView):
+    template_name = 'genre_confirm_delete.html'
+    model = Genre
+    success_url = reverse_lazy('genres')
