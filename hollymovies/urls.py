@@ -48,6 +48,11 @@ urlpatterns = [
     path('movie/update/<pk>/', MovieUpdateView.as_view(), name='movie_update'),
     path('movie/delete/<pk>/', MovieDeleteView.as_view(), name='movie_delete'),
     path('movie/<pk>/', movie, name='movie'),
+    path('creators/', CreatorsView.as_view(), name='creators'),
+    path('creator/create/', CreatorCreateView.as_view(), name='creator_create'),
+    path('creator/update/<pk>/', CreatorUpdateView.as_view(), name='creator_update'),
+    path('creator/delete/<pk>/', CreatorDeleteView.as_view(), name='creator_delete'),
+    path('creator/<pk>/', CreatorView.as_view(), name='creator'),
 
     # authentication
     #path('accounts/login/', LoginView.as_view(), name='login'),

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="creator-details">
+    <h1>{{ creator.name}} {{ creator.surname|upper }}</h1>
+    <p>Datum narození: {{ creator.birth_date }}</p>
+    <p>Místo narození: {{ creator.birth_place }}</p>
+    {% if creator.death_date %}
+    <p>Datum úmrtí: {{ creator.death_date }}</p>
+    {% endif %}
+    <p>Země: {{ creator.country }}</p>
+    <p>Pohlaví: {{ creator.sex }}</p>
+
+    <p>
+        {% if creator.directed_movies.all.count %}
+            Režie:
+            {% for movie in creator.directed_movies.all %}
+                <a href="{% url 'movie' movie.id %}">{{ movie }}</a>{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        {% endif %}
+    </p>
+    <p>
+        {% if creator.acting_in_movies.all.count %}
+            Herectví:
+            {% for movie in creator.acting_in_movies.all %}
+                <a href="{% url 'movie' movie.id %}">{{ movie }}</a>{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        {% endif %}
+    </p>
+
+    <p>Biografie: {{ creator.biography }}</p>
+</div>
+{% endblock %}

@@ -13,7 +13,7 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import TemplateView, ListView, FormView, CreateView, UpdateView, DeleteView
 
-from viewer.models import Genre, Movie
+from viewer.models import Genre, Movie, Creator
 
 
 # Create your views here.
@@ -178,12 +178,33 @@ class GenresView(ListView):
     model = Genre
 
 
+class CreatorsView(ListView):
+    template_name = 'creators.html'
+    model = Creator
+    context_object_name = 'creators'
+
+
+class CreatorView(View):
+    def get(self, request, pk):
+        if Creator.objects.filter(id=pk).exists():  # otestujeme, zda film existuje
+            result = Creator.objects.get(id=pk)
+            return render(request, 'creator.html', {'title': result, 'creator': result})
+
+        result = Creator.objects.all()
+        return render(request,
+                      'creators.html',
+                      {'title': 'Creators', 'creators': result})
+
+
 """ Forms """
 
 """ Validators """
+
+
 def capitalized_validator(value):
     if value[0].islower():
         raise ValidationError('Value must be capitalized.')
+
 
 class PastMonthField(DateField):
 
@@ -354,3 +375,40 @@ class GenreDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'genre_confirm_delete.html'
     model = Genre
     success_url = reverse_lazy('genres')
+
+
+class CreatorModelForm(ModelForm):
+    class Meta:
+        model = Creator
+        fields = '__all__'
+
+    def clean_name(self):
+        initial = self.cleaned_data['name']
+        return initial.strip().capitalize()
+
+    def clean_surname(self):
+        initial = self.cleaned_data['surname']
+        return initial.strip().capitalize()
+
+
+class CreatorCreateView(CreateView):
+    template_name = 'form.html'
+    form_class = CreatorModelForm
+    success_url = reverse_lazy('creators')
+
+    def form_invalid(self, form):
+        LOGGER.warning('Invalid data in CreatorCreateView')
+        return super().form_invalid(form)
+
+
+class CreatorUpdateView(LoginRequiredMixin, UpdateView):
+    template_name = 'form.html'
+    model = Creator
+    form_class = CreatorModelForm
+    success_url = reverse_lazy('creators')
+
+
+class CreatorDeleteView(LoginRequiredMixin, DeleteView):
+    template_name = 'creator_confirm_delete.html'
+    model = Creator
+    success_url = reverse_lazy('creators')

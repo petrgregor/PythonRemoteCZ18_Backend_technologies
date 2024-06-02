@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>List of creators</h1>
+<ul>
+    {% for creator in creators %}
+        <li><a href="{% url 'creator' creator.id %}">{{ creator }}</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'creator_update' creator.id %}">✏️</a>
+                <a href="{% url 'creator_delete' creator.id %}">❌</a>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
+
+{% if user.is_authenticated %}
+    <a href="{% url 'creator_create' %}">✖️</a>
+{% endif %}
+
+{% endblock %}

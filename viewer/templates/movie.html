@@ -30,7 +30,7 @@ TODO: upravit vzhled
 
     <p>Režie:
         {% for director in movie.directors.all %}
-            {{ director }}{% if not forloop.last %},{% endif %}
+        <a href="{% url 'creator' director.id %}">{{ director }}</a>{% if not forloop.last %},{% endif %}
         {% empty %}
             No director.
         {% endfor %}
@@ -38,7 +38,7 @@ TODO: upravit vzhled
 
     <p>Hrají:
         {% for actor in movie.actors.all %}
-            {{ actor }}{% if not forloop.last %},{% endif %}
+            <a href="{% url 'creator' actor.id %}">{{ actor }}</a>{% if not forloop.last %},{% endif %}
         {% empty %}
             No actor.
         {% endfor %}
