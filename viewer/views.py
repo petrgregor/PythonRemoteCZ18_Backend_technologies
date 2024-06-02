@@ -78,6 +78,14 @@ def movies_by_rating(request):
                   {'title': 'List of movies by rating', 'movies': result})
 
 
+def movies_by_popularity(request):
+    result = Movie.objects.all().order_by('-clicked', 'title')
+    return render(request,
+                  'movies_by_popularity.html',
+                  {'title': 'List of movies by popularity', 'movies': result})
+
+
+
 # DONE: detailní informace o jednom konkrétním filmu (id zadané v adrese)
 # DONE: template
 # DONE: view
@@ -86,6 +94,9 @@ def movies_by_rating(request):
 def movie(request, pk):
     if Movie.objects.filter(id=pk).exists():  # otestujeme, zda film existuje
         result = Movie.objects.get(id=pk)
+        # TODO: počítat kliknutí
+        result.clicked += 1
+        result.save()
         return render(request, 'movie.html', {'title': result.title, 'movie': result})
 
     # pokud daný film neexistuje, vypíšeme seznam všech filmů
@@ -140,6 +151,12 @@ class MoviesByRatingView(TemplateView):
     template_name = 'movies_by_rating.html'
     extra_context = {'title': 'List of movies by rating',
                      'movies': Movie.objects.all().order_by('-rating', 'title')}
+
+
+class MoviesByPopularityView(TemplateView):
+    template_name = 'movies_by_popularity.html'
+    extra_context = {'title': 'List of movies by popularity',
+                     'movies': Movie.objects.all().order_by('-clicked', 'title')}
 
 
 class MovieView(View):

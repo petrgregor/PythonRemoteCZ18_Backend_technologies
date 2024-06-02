@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.db.models import Model, CharField, ForeignKey, DO_NOTHING, IntegerField, DateField, TextField, \
     DateTimeField, ManyToManyField, TextChoices
 
@@ -45,6 +47,31 @@ class Creator(Model):
     def __str__(self):
         return f"{self.name} {self.surname} ({self.birth_date.year})"
 
+    def print_counts(self):
+        result = ""
+        if self.directed_movies.count() or self.acting_in_movies.count():
+            result = "("
+            if self.directed_movies.count():
+                result += f"director: {self.directed_movies.count()}"
+                if self.acting_in_movies.count():
+                    result += ", "
+            if self.acting_in_movies.count():
+                result += f"actor: {self.acting_in_movies.count()}"
+            result += ")"
+        return result
+
+    def age(self):
+        start_date = self.birth_date
+        end_date = date.today()
+        if self.death_date:
+            end_date = self.death_date
+        age = end_date.year - start_date.year
+        if end_date.month < start_date.month:
+            age -= 1
+        if end_date.month == start_date.month and end_date.day < start_date.day:
+            age -= 1
+        return age
+
 
 class Movie(Model):
     title = CharField(max_length=64)
@@ -58,6 +85,7 @@ class Movie(Model):
     released = DateField()
     length = IntegerField(null=True, blank=True)
     description = TextField()
+    clicked = IntegerField(default=0)
     created = DateTimeField(auto_now_add=True)
 
     class Meta:

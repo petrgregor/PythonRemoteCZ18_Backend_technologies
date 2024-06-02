@@ -4,10 +4,10 @@
 
 <div class="creator-details">
     <h1>{{ creator.name}} {{ creator.surname|upper }}</h1>
-    <p>Datum narození: {{ creator.birth_date }}</p>
+    <p>Datum narození: {{ creator.birth_date|date:"j. n. Y" }} (age: {{ creator.age }})</p>
     <p>Místo narození: {{ creator.birth_place }}</p>
     {% if creator.death_date %}
-    <p>Datum úmrtí: {{ creator.death_date }}</p>
+    <p>Datum úmrtí: {{ creator.death_date|date:"j. n. Y" }}</p>
     {% endif %}
     <p>Země: {{ creator.country }}</p>
     <p>Pohlaví: {{ creator.sex }}</p>

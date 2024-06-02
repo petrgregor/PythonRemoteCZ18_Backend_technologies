@@ -44,6 +44,7 @@ urlpatterns = [
     path('movies/', MoviesView.as_view(), name='movies'),
     #path('movies_by_rating/', movies_by_rating, name='movies_by_rating'),
     path('movies_by_rating/', MoviesByRatingView.as_view(), name='movies_by_rating'),
+    path('movies_by_popularity/', MoviesByPopularityView.as_view(), name='movies_by_populartiy'),
     path('movie/create/', MovieCreateView.as_view(), name='movie_create'),
     path('movie/update/<pk>/', MovieUpdateView.as_view(), name='movie_update'),
     path('movie/delete/<pk>/', MovieDeleteView.as_view(), name='movie_delete'),

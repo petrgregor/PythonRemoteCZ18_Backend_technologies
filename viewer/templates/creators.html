@@ -5,6 +5,7 @@
 <ul>
     {% for creator in creators %}
         <li><a href="{% url 'creator' creator.id %}">{{ creator }}</a>
+            {{ creator.print_counts }}
             {% if user.is_authenticated %}
                 <a href="{% url 'creator_update' creator.id %}">✏️</a>
                 <a href="{% url 'creator_delete' creator.id %}">❌</a>

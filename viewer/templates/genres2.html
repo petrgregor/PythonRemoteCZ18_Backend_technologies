@@ -5,7 +5,12 @@
 <ul>
     {% for genre in object_list %}
         <li>
-            <a href="{% url 'genre' genre.id %}">{{ genre }}</a>
+            {% if genre.movies.all.count %}
+                <a href="{% url 'genre' genre.id %}">{{ genre }}</a>
+            {% else %}
+                {{ genre }}
+            {% endif %}
+            (movies: {{ genre.movies.all.count }})
             {% if user.is_authenticated %}
                 <a href="{% url 'genre_update' genre.id %}">✏️</a>
                 <a href="{% url 'genre_delete' genre.id %}">❌</a>

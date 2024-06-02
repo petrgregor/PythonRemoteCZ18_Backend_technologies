@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>List of movies by popularity:</h1>
+<ul>
+    {% for movie in movies %}
+        <li><a href="{% url 'movie' movie.id %}">{{ movie }} - {{ movie.clicked }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}
