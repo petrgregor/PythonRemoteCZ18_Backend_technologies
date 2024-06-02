@@ -7,9 +7,43 @@ TODO: upravit vzhled
 <!-- TODO test -->
 <div class="movie-details">
     <h1>{{ movie.title|upper }}</h1>
-    <p>Žánr: {{ movie.genre.name }}</p>
+    {% if movie.title_cz %}
+        <h2>{{ movie.title_cz }}</h2>
+    {% endif %}
+    <p>Žánr:
+        {% for genre in movie.genres.all %}
+            {{ genre }}{% if not forloop.last %},{% endif %}
+        {% empty %}
+            No genre.
+        {% endfor %}
+    </p>
+    <p>Země:
+        {% for country in movie.countries.all %}
+            {{ country }}{% if not forloop.last %},{% endif %}
+        {% empty %}
+            No country.
+        {% endfor %}
+    </p>
+    <p>Délka: {{ movie.length }}</p>
     <p>Rating: {{ movie.rating }}</p>
     <p>Released: {{ movie.released|date:"j. n. Y" }}</p>
+
+    <p>Režie:
+        {% for director in movie.directors.all %}
+            {{ director }}{% if not forloop.last %},{% endif %}
+        {% empty %}
+            No director.
+        {% endfor %}
+    </p>
+
+    <p>Hrají:
+        {% for actor in movie.actors.all %}
+            {{ actor }}{% if not forloop.last %},{% endif %}
+        {% empty %}
+            No actor.
+        {% endfor %}
+    </p>
+
     <p>Popis: {{ movie.description }}</p>
 
     {% if user.is_authenticated %}

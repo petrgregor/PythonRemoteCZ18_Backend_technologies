@@ -1,7 +1,8 @@
 from django.contrib import admin
 
-from viewer.models import Genre, Movie
+from viewer.models import Genre, Movie, Country, Creator
 
-# Register your models here.
+admin.site.register(Country)
+admin.site.register(Creator)
 admin.site.register(Genre)
 admin.site.register(Movie)

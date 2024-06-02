@@ -99,7 +99,7 @@ def movie(request, pk):
 def genre(request, pk):
     if Genre.objects.filter(id=pk).exists():
         genre = Genre.objects.get(id=pk)
-        items = Movie.objects.filter(genre=genre)
+        items = genre.movies.all()  #Movie.objects.filter(genre=genre)
         return render(request,
                       "genre.html",
                       {'movies': items, 'genre': genre})
@@ -251,12 +251,12 @@ class MovieModelForm(ModelForm):
 
     def clean(self):
         result = super().clean()
-        if result['genre'].name == 'Commedy' and result['rating'] > 5:
+        """if result['genre'].name == 'Commedy' and result['rating'] > 5:
             self.add_error('genre', '')
             self.add_error('rating', '')
             raise ValidationError(
                 "Commedies aren't so good to be rated over 5."
-            )
+            )"""
         return result
 
 
