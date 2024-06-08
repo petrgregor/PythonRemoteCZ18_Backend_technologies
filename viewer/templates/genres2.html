@@ -12,8 +12,12 @@
             {% endif %}
             (movies: {{ genre.movies.all.count }})
             {% if user.is_authenticated %}
-                <a href="{% url 'genre_update' genre.id %}">✏️</a>
-                <a href="{% url 'genre_delete' genre.id %}">❌</a>
+                {% if perms.viewer.change_genre %}
+                    <a href="{% url 'genre_update' genre.id %}">✏️</a>
+                {% endif %}
+                {% if perms.viewer.delete_genre %}
+                    <a href="{% url 'genre_delete' genre.id %}">❌</a>
+                {% endif %}
             {% endif %}
         </li>
     {% empty %}
@@ -22,6 +26,8 @@
 </ul>
 
 {% if user.is_authenticated %}
-    <a href="{% url 'genre_create' %}">✖️</a>
+    {% if perms.viewer.add_genre %}
+        <a href="{% url 'genre_create' %}">✖️</a>
+    {% endif %}
 {% endif %}
 {% endblock %}

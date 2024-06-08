@@ -7,15 +7,21 @@
         <li><a href="{% url 'creator' creator.id %}">{{ creator }}</a>
             {{ creator.print_counts }}
             {% if user.is_authenticated %}
-                <a href="{% url 'creator_update' creator.id %}">✏️</a>
-                <a href="{% url 'creator_delete' creator.id %}">❌</a>
+                {% if perms.viewer.change_creator %}
+                    <a href="{% url 'creator_update' creator.id %}">✏️</a>
+                {% endif %}
+                {% if perms.viewer.delete_creator %}
+                    <a href="{% url 'creator_delete' creator.id %}">❌</a>
+                {% endif %}
             {% endif %}
         </li>
     {% endfor %}
 </ul>
 
 {% if user.is_authenticated %}
-    <a href="{% url 'creator_create' %}">✖️</a>
+    {% if perms.viewer.add_creator %}
+        <a href="{% url 'creator_create' %}">✖️</a>
+    {% endif %}
 {% endif %}
 
 {% endblock %}
