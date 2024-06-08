@@ -84,7 +84,7 @@ class Movie(Model):
     rating = IntegerField()
     released = DateField()
     length = IntegerField(null=True, blank=True)
-    description = TextField()
+    description = TextField(null=True)
     clicked = IntegerField(default=0)
     created = DateTimeField(auto_now_add=True)
 
