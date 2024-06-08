@@ -7,5 +7,8 @@ class Profile(Model):
     birth_date = DateField(null=True, blank=True)
     biography = TextField(null=True, blank=True)
 
+    class Meta:
+        ordering = ['user__username']
+
     def __str__(self):
         return f"{self.user}"

@@ -17,7 +17,8 @@ from django.contrib import admin
 from django.contrib.auth.views import LoginView
 from django.urls import path, include
 
-from accounts.views import SubmittableLoginView, SubmittablePasswordChangeView, SignUpView
+from accounts.views import SubmittableLoginView, SubmittablePasswordChangeView, SignUpView, ProfilesListView, \
+    ProfileDetailView, ProfileUpdateView, ProfileDeleteView
 from viewer.views import *
 
 
@@ -61,4 +62,9 @@ urlpatterns = [
     path('accounts/signup/', SignUpView.as_view(), name='signup'),
     path('accounts/password_change/', SubmittablePasswordChangeView.as_view(), name='password_change'),
     path('accounts/', include('django.contrib.auth.urls')),  # defaultní view pro přihlašování/odhlašování/změnu hesla...
+
+    path('accounts/profiles/', ProfilesListView.as_view(), name='profiles'),
+    path('accounts/profile/<pk>/', ProfileDetailView.as_view(), name='profile'),
+    path('accounts/profile/update/<pk>/', ProfileUpdateView.as_view(), name='profile_update'),
+    path('accounts/profile/delete/<pk>/', ProfileDeleteView.as_view(), name='profile_delete'),
 ]

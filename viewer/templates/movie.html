@@ -12,7 +12,7 @@ TODO: upravit vzhled
     {% endif %}
     <p>Žánr:
         {% for genre in movie.genres.all %}
-            {{ genre }}{% if not forloop.last %},{% endif %}
+            <a href="{% url 'genre' genre.id %}">{{ genre }}</a>{% if not forloop.last %},{% endif %}
         {% empty %}
             No genre.
         {% endfor %}

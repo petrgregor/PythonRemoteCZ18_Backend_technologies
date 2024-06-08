@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{ profile }}</h1>
+{% if profile.user.first_name %}
+    First name: {{ profile.user.first_name }} <br>
+{% endif %}
+{% if profile.user.last_name %}
+    Last name: {{ profile.user.last_name }} <br>
+{% endif %}
+{% if request.user.is_staff %}
+    {% if profile.user.email %}
+        Email: {{ profile.user.email }} <br>
+    {% endif %}
+{% endif %}
+Date of birth: {{ profile.birth_date }} <br>
+Biography: {{ profile.biography }}
+
+
+
+{% endblock %}

@@ -18,6 +18,7 @@
                 <a class="nav-item nav-link active" href="{% url 'genres' %}">Genres</a>
                 <a class="nav-item nav-link active" href="{% url 'creators' %}">Creators</a>
                 {% if user.is_authenticated %}
+                    <a class="nav-item nav-link active" href="{% url 'profiles' %}">Profiles</a>
                     {% if perms.viewer.add_movie %}
                         <a class="nav-item nav-link active" href="{% url 'movie_create' %}">Add movie</a>
                     {% endif %}
