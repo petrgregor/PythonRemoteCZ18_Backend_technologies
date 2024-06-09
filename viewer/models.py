@@ -82,7 +82,7 @@ class Movie(Model):
     directors = ManyToManyField(Creator, blank=True, related_name='directed_movies')
     actors = ManyToManyField(Creator, blank=True, related_name='acting_in_movies')
     rating = IntegerField()
-    released = DateField()
+    released = DateField(null=True, blank=True)
     length = IntegerField(null=True, blank=True)
     description = TextField(null=True)
     clicked = IntegerField(default=0)

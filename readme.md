@@ -167,3 +167,12 @@ pulp_fiction.save()
 
 ## Validace výsledných stránek
 Na adrese `https://validator.w3.org/` je možné otestovat validaci stránky.
+
+## Testy
+V každé aplikaci máme defaultně soubor `tests.py`, do kterého můžeme vkládat testy.
+Je možné vytvořit další soubor s testy, název ideálně začíná slovem `test*.py`.
+
+Příkaz pro testování `python manage.py test` spustí všechny testy v souborech začínající `test`.
+
+Základní testy se spouští na virtuální databázi, která má stejné schéma, jako naše definovaná
+databáze v `models.py`, ale je úplně prázdná a nezávislá na skutečné databázi.

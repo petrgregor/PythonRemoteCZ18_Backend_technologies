@@ -274,6 +274,7 @@ class MovieModelForm(ModelForm):
     title = CharField(validators=[capitalized_validator])
     rating = IntegerField(min_value=1, max_value=10)
     released = PastMonthField()
+    length = IntegerField(min_value=1)
 
     def clean_title(self):
         initial_data = super().clean()  # původní data ve formuláři od uživatele
@@ -446,3 +447,7 @@ class CreatorDeleteView(StaffRequiredMixin, PermissionRequiredMixin, DeleteView)
 
     def test_func(self):
         return super().test_func() and self.request.user.is_superuser
+
+
+# TODO Country form
+# TODO Country Create, Update, Delete
