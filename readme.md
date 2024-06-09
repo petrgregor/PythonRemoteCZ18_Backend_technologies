@@ -174,5 +174,15 @@ Je možné vytvořit další soubor s testy, název ideálně začíná slovem `
 
 Příkaz pro testování `python manage.py test` spustí všechny testy v souborech začínající `test`.
 
+Příkaz pro testování `python manage.py test viewer.test_models` spustí všechny testy v souboru `test_models.py`.
+
 Základní testy se spouští na virtuální databázi, která má stejné schéma, jako naše definovaná
 databáze v `models.py`, ale je úplně prázdná a nezávislá na skutečné databázi.
+
+### Testy GUI
+Nainstalujeme selenium (pro práci s webovou stránkou):
+`pip install selenium`
+
+Pozor: zde již využíváme reálnou databázi!
+
+Pozor: musí být spuštěný server.
