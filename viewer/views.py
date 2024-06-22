@@ -470,3 +470,15 @@ class ImageCreateView(PermissionRequiredMixin, CreateView):
         LOGGER.warning('User provided invalid data.')
         return super().form_invalid(form)
 
+
+def search(request):
+    if request.method == "POST":
+        q = request.POST.get("search")
+        movies_ = Movie.objects.filter(title__contains=q)
+        movies2_ = Movie.objects.filter(description__contains=q)
+        creators_ = Creator.objects.filter(surname__contains=q)
+        creators2_ = Creator.objects.filter(biography__contains=q)
+        context = {'search_input': q, 'movies': movies_, 'movies2': movies2_,
+                   'creators': creators_, 'creators2': creators2_}
+        return render(request, "search_results.html", context)
+    return render(request, "home.html")

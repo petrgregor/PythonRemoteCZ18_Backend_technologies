@@ -19,20 +19,34 @@
                 <a class="nav-item nav-link active" href="{% url 'creators' %}">Creators</a>
                 {% if user.is_authenticated %}
                     <a class="nav-item nav-link active" href="{% url 'profiles' %}">Profiles</a>
-                    {% if perms.viewer.add_movie %}
-                        <a class="nav-item nav-link active" href="{% url 'movie_create' %}">Add movie</a>
-                    {% endif %}
-                    {% if perms.viewer.add_genre %}
-                        <a class="nav-item nav-link active" href="{% url 'genre_create' %}">Add genre</a>
-                    {% endif %}
-                    {% if perms.viewer.add_creator %}
-                        <a class="nav-item nav-link active" href="{% url 'creator_create' %}">Add creator</a>
-                    {% endif %}
-                    {% if perms.viewer.add_image %}
-                        <a class="nav-item nav-link active" href="{% url 'image_create' %}">Add image</a>
-                    {% endif %}
+                    <div class="navbar-nav ml-auto">
+                        <div class="nav-item dropdown">
+                            <a class="nav-link active dropdown-toggle" href="#" data-toggle="dropdown">
+                                Add
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                {% if perms.viewer.add_movie %}
+                                    <a class="dropdown-item text-right" href="{% url 'movie_create' %}">Add movie</a>
+                                {% endif %}
+                                {% if perms.viewer.add_genre %}
+                                    <a class="dropdown-item text-right" href="{% url 'genre_create' %}">Add genre</a>
+                                {% endif %}
+                                {% if perms.viewer.add_creator %}
+                                    <a class="dropdown-item text-right" href="{% url 'creator_create' %}">Add creator</a>
+                                {% endif %}
+                                {% if perms.viewer.add_image %}
+                                    <a class="dropdown-item text-right" href="{% url 'image_create' %}">Add image</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
                 {% endif %}
             </div>
+
+            <form action="/search/" method="post">
+                {% csrf_token %}
+                <input type="text" id="id_search" name="search" value="Search">
+            </form>
 
             <div class="navbar-nav ml-auto">
                 <div class="nav-item dropdown">

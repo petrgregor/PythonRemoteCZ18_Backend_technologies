@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Search: '{{ search_input }}'</h1>
+    <h2>Movie title</h2>
+        <ul>
+            {% for movie in movies %}
+                <li><a href="{% url 'movie' movie.id %}">{{ movie }}</a></li>
+            {% empty %}
+                No result
+            {% endfor %}
+        </ul>
+    <h2>Movie description</h2>
+        <ul>
+            {% for movie in movies2 %}
+                <li><a href="{% url 'movie' movie.id %}">{{ movie }}</a></li>
+            {% empty %}
+                No result
+            {% endfor %}
+        </ul>
+    <h2>Creator surname</h2>
+        <ul>
+            {% for creator in creators %}
+                <li><a href="{% url 'creator' creator.id %}">{{ creator }}</a></li>
+            {% empty %}
+                No result
+            {% endfor %}
+        </ul>
+    <h2>Creator biography</h2>
+        <ul>
+            {% for creator in creators2 %}
+                <li><a href="{% url 'creator' creator.id %}">{{ creator }}</a></li>
+            {% empty %}
+                No result
+            {% endfor %}
+        </ul>
+{% endblock %}

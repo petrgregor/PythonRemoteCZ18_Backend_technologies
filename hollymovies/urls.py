@@ -76,4 +76,6 @@ urlpatterns = [
     path('api-auth', include('rest_framework.urls', namespace='rest_framework')),
     path('api/movies/', api.views.MovieList.as_view()),
     path('api/movie/<pk>/', api.views.MovieDetail.as_view()),
+
+    path('search/', search, name='search'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
