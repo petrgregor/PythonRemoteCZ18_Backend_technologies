@@ -186,3 +186,49 @@ Nainstalujeme selenium (pro práci s webovou stránkou):
 Pozor: zde již využíváme reálnou databázi!
 
 Pozor: musí být spuštěný server.
+
+## API
+Vytvoříme novou aplikaci pro API `python manage.py startapp api`
+
+Do souboru `settings.py` do části `INSTALLED_APPS` vložíme `'api',`
+
+Nainstalujeme si rest framework: `pip install djangorestframework`
+
+Do souboru `settings.py` do části `INSTALLED_APPS` vložíme `'rest_framework',`
+
+Vytvoříme serializer v souboru `api.serializers.py`.
+```python
+class MovieSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Movie
+        fields = ['title', 'title_cz', 'description']
+```
+
+Dále vytvoříme view ve `views.py`:
+```python
+class MovieList(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+```
+
+A definujeme url v `urls.py`:
+```python
+path('api/movies/', api.views.MovieList.as_view()),
+```
+
+Je vhodné omezit práci s API jen na uživatele, kteří mají oprávnění.
+Do `settings.py` vložíme: 
+```python
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+    ]
+}
+```

@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.contrib.auth.views import LoginView
 from django.urls import path, include
 
+import api.views
 from accounts.views import SubmittableLoginView, SubmittablePasswordChangeView, SignUpView, ProfilesListView, \
     ProfileDetailView, ProfileUpdateView, ProfileDeleteView
 from viewer.views import *
@@ -67,4 +68,9 @@ urlpatterns = [
     path('accounts/profile/<pk>/', ProfileDetailView.as_view(), name='profile'),
     path('accounts/profile/update/<pk>/', ProfileUpdateView.as_view(), name='profile_update'),
     path('accounts/profile/delete/<pk>/', ProfileDeleteView.as_view(), name='profile_delete'),
+
+    # API
+    path('api-auth', include('rest_framework.urls', namespace='rest_framework')),
+    path('api/movies/', api.views.MovieList.as_view()),
+    path('api/movie/<pk>/', api.views.MovieDetail.as_view()),
 ]
