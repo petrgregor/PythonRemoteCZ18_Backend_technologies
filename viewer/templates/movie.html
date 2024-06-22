@@ -10,6 +10,13 @@ TODO: upravit vzhled
     {% if movie.title_cz %}
         <h2>{{ movie.title_cz }}</h2>
     {% endif %}
+    <div class="movie-images">
+        {% for image in images %}
+            <span class="movie-image">
+                <img src="{{ image.image.url }}" alt="{{ image.description }}" width="150px">
+            </span>
+        {% endfor %}
+    </div>
     <p>Žánr:
         {% for genre in movie.genres.all %}
             <a href="{% url 'genre' genre.id %}">{{ genre }}</a>{% if not forloop.last %},{% endif %}

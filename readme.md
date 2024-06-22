@@ -232,3 +232,25 @@ REST_FRAMEWORK = {
     ]
 }
 ```
+
+## Obrázky
+Nainstalujeme knihovnu Pillow `pip install Pillow`
+
+V `models.py` použijeme `ImageField`: `image = ImageField(upload_to="images/", default=None, null=False, blank=False)`.
+
+Do `setting.py` vložíme nastavení:
+```python
+MEDIA_ROOT = os.path.join(BASE_DIR, '')
+MEDIA_URL = 'images/'
+```
+
+Do `urls.py` přidáme za konec seznamu cest:
+`+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)`
+
+V template zobrazujeme obrázek pomocí `<img src="{{ image.image.url }}" alt="{{ image.description }}" width="150px">`
+
+Ve formuláři musíme definovat enctype:
+`<form method="post" enctype="multipart/form-data">`
+
+Nemusíme řešit názvy souborů (jestli není již soubor se stejným názvem v projektu),
+Django automaticky v takovém případě přidá k názvu unikátní řetězec.

@@ -4,6 +4,13 @@
 
 <div class="creator-details">
     <h1>{{ creator.name}} {{ creator.surname|upper }}</h1>
+    <div class="creator-images">
+        {% for image in creator.images.all %}
+            <span class="creator-image">
+                <img src="{{ image.image.url }}" alt="{{ image.description }}" width="150px">
+            </span>
+        {% endfor %}
+    </div>
     <p>Datum narození: {{ creator.birth_date|date:"j. n. Y" }} (age: {{ creator.age }})</p>
     <p>Místo narození: {{ creator.birth_place }}</p>
     {% if creator.death_date %}

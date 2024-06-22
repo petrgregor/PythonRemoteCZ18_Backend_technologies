@@ -13,7 +13,7 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import TemplateView, ListView, FormView, CreateView, UpdateView, DeleteView
 
-from viewer.models import Genre, Movie, Creator
+from viewer.models import Genre, Movie, Creator, Image
 
 
 # Create your views here.
@@ -162,7 +162,8 @@ class MovieView(View):
     def get(self, request, pk):
         if Movie.objects.filter(id=pk).exists():  # otestujeme, zda film existuje
             result = Movie.objects.get(id=pk)
-            return render(request, 'movie.html', {'title': result.title, 'movie': result})
+            images = Image.objects.filter(movie = result)
+            return render(request, 'movie.html', {'title': result.title, 'movie': result, 'images': images})
 
         # pokud daný film neexistuje, vypíšeme seznam všech filmů
         # TODO: lepší by bylo vypsat chybovou hlášku
@@ -451,3 +452,21 @@ class CreatorDeleteView(StaffRequiredMixin, PermissionRequiredMixin, DeleteView)
 
 # TODO Country form
 # TODO Country Create, Update, Delete
+
+
+class ImageModelForm(ModelForm):
+    class Meta:
+        model = Image
+        fields = '__all__'
+
+
+class ImageCreateView(PermissionRequiredMixin, CreateView):
+    template_name = 'form_image.html'
+    form_class = ImageModelForm
+    success_url = reverse_lazy('home')
+    permission_required = 'viewer.add_image'
+
+    def form_invalid(self, form):
+        LOGGER.warning('User provided invalid data.')
+        return super().form_invalid(form)
+

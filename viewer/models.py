@@ -1,7 +1,7 @@
 from datetime import date
 
 from django.db.models import Model, CharField, ForeignKey, DO_NOTHING, IntegerField, DateField, TextField, \
-    DateTimeField, ManyToManyField, TextChoices
+    DateTimeField, ManyToManyField, TextChoices, ImageField, SET_NULL
 
 
 class Genre(Model):
@@ -93,3 +93,16 @@ class Movie(Model):
 
     def __str__(self):
         return f'{self.title} ({self.released.year})'
+
+
+class Image(Model):
+    image = ImageField(upload_to="images/", default=None, null=False, blank=False)
+    movie = ForeignKey(Movie, on_delete=SET_NULL, null=True, blank=True)
+    actors = ManyToManyField(Creator, blank=True, related_name='images')
+    description = TextField(null=True, blank=True)
+
+    def __repr__(self):
+        return f"Image(image={self.image}, movie={self.movie}, actors={self.actors}, description={self.description})"
+
+    def __str__(self):
+        return f"Image: {self.image}, {self.description}"

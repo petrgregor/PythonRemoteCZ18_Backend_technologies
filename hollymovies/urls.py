@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth.views import LoginView
 from django.urls import path, include
@@ -20,6 +21,7 @@ from django.urls import path, include
 import api.views
 from accounts.views import SubmittableLoginView, SubmittablePasswordChangeView, SignUpView, ProfilesListView, \
     ProfileDetailView, ProfileUpdateView, ProfileDeleteView
+from hollymovies import settings
 from viewer.views import *
 
 
@@ -50,12 +52,13 @@ urlpatterns = [
     path('movie/create/', MovieCreateView.as_view(), name='movie_create'),
     path('movie/update/<pk>/', MovieUpdateView.as_view(), name='movie_update'),
     path('movie/delete/<pk>/', MovieDeleteView.as_view(), name='movie_delete'),
-    path('movie/<pk>/', movie, name='movie'),
+    path('movie/<pk>/', MovieView.as_view(), name='movie'),
     path('creators/', CreatorsView.as_view(), name='creators'),
     path('creator/create/', CreatorCreateView.as_view(), name='creator_create'),
     path('creator/update/<pk>/', CreatorUpdateView.as_view(), name='creator_update'),
     path('creator/delete/<pk>/', CreatorDeleteView.as_view(), name='creator_delete'),
     path('creator/<pk>/', CreatorView.as_view(), name='creator'),
+    path('image/create/', ImageCreateView.as_view(), name='image_create'),
 
     # authentication
     #path('accounts/login/', LoginView.as_view(), name='login'),
@@ -73,4 +76,4 @@ urlpatterns = [
     path('api-auth', include('rest_framework.urls', namespace='rest_framework')),
     path('api/movies/', api.views.MovieList.as_view()),
     path('api/movie/<pk>/', api.views.MovieDetail.as_view()),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
